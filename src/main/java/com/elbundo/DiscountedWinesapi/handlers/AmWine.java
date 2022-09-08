@@ -27,7 +27,6 @@ public class AmWine implements Handler{
     private final String PRODUCTS = "window.products = ";
     @Override
     public List<Wine> getAllWines() {
-        if(true) return new ArrayList<>();
         String address = "https://amwine.ru/catalog/vino/filter/country-is-rossiya/value-is-0.75/";
         List<Wine> list = new ArrayList<>();
         CloseableHttpClient httpClient = HttpClientBuilder.create()
@@ -75,13 +74,11 @@ public class AmWine implements Handler{
                         wine.setPrice(Double.parseDouble(wine_card.getString("price")));
                         wine.setPriceWithDiscount(Double.parseDouble(wine_card.getString("old_price")));
                         wine.setDiscount(Math.abs(Double.parseDouble(wine_card.getString("sale").replaceAll("%", ""))));
-                        //TODO make a ratings
                         wine.setRatings("");
                         if (wine.getPrice() < 400)
                             continue;
                         list.add(wine);
                     }
-
                 }
             } catch (Exception ignored) {
 

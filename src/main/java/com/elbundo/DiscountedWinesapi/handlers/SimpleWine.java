@@ -19,7 +19,6 @@ public class SimpleWine implements Handler{
     private final String site = "https://simplewine.ru";
     @Override
     public List<Wine> getAllWines() {
-        if(true) return new ArrayList<>();
         List<Wine> result = new ArrayList<>();
         String address = "https://simplewine.ru/stock/discount/filter/country-rossiya/volume-0_75/";
         int page = 1;
@@ -45,7 +44,7 @@ public class SimpleWine implements Handler{
                         wine.setAlias(alias.toString());
                         Element priceAndDiscount = item.getElementsByClass("product-snippet__discount").get(0);
                         wine.setPrice(Double.parseDouble(priceAndDiscount.getAllElements().get(1).text().replace("₽", "").replaceAll(" ", "")));
-                        if(wine.getPrice() < DiscountedWinesApiApplication.MinPrice)
+                        if(wine.getPrice() < DiscountedWinesApiApplication.MIN_PRICE)
                             continue;
                         wine.setDiscount(Double.parseDouble(priceAndDiscount.getAllElements().get(2).text().replace("%", "").replace("-", "")));
                         Element priceWithDiscount = item.getElementsByClass("product-snippet__price").get(0);
@@ -62,11 +61,10 @@ public class SimpleWine implements Handler{
                         wine.setRatings(wineRating.toString());
                         result.add(wine);
                     } catch(Exception e) {
-                        e.printStackTrace();
+
                     }
                 }
             } catch (IOException e) {
-                System.out.println(e.getMessage());
                 break;
             }
             page++;

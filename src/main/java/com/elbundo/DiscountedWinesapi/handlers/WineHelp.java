@@ -19,7 +19,6 @@ public class WineHelp implements Handler{
     private final String site = "https://winehelp2.ru";
     @Override
     public List<Wine> getAllWines() {
-        //if(true) return new ArrayList<>();
         List<Wine> result = new ArrayList<>();
         String address = "https://winehelp2.ru/aktsii-rossii/rz_available-is-available/volume-is-0-75l/drink_type-is-beloe-wino-or-wine-or-a%20sparkling%20wine-or-krasnoe-wino-or-rosovoe-wino/";
         int page = 1;
@@ -30,7 +29,6 @@ public class WineHelp implements Handler{
                 Elements pages = doc.getElementsByClass("bx-pagination-container").get(0).getElementsByTag("li");
                 if(maxPage == 1000) {
                     maxPage = Integer.parseInt(pages.get(pages.size() - 2).getElementsByTag("span").get(0).text());
-                    log.info("Count of page: " + maxPage);
                 }
                 Elements items = doc.getElementsByClass("product-item-container");
                 for(Element item : items) {
@@ -49,17 +47,16 @@ public class WineHelp implements Handler{
                         wine.setAlias("");
                         Element oldPrice = item.getElementsByClass("product-item-price-old").get(0);
                         wine.setPrice(Double.parseDouble(oldPrice.text().replace("руб.", "").replaceAll(" ", "")));
-                        if(wine.getPrice() < DiscountedWinesApiApplication.MinPrice)
+                        if(wine.getPrice() < DiscountedWinesApiApplication.MIN_PRICE)
                             continue;
                         Element priceWithDiscount = item.getElementsByClass("product-item-price-current").get(0);
                         wine.setPriceWithDiscount(Double.parseDouble(priceWithDiscount.text().replace("руб.", "").replaceAll(" ", "")));
                         result.add(wine);
                     } catch(Exception e) {
-                        e.printStackTrace();
+
                     }
                 }
             } catch (IOException e) {
-                System.out.println(e.getMessage());
                 break;
             }
             page++;

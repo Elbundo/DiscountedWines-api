@@ -25,7 +25,6 @@ public class Luding implements Handler {
     private final String site = "https://luding.ru";
     @Override
     public List<Wine> getAllWines() {
-        if(true) return new ArrayList<>();
         List<Wine> result = new ArrayList<>();
         String address = "https://luding.ru/collection/wine/filter/sale_mark_s1-is-3661e4d671d094d2cfbe06e331ebfe65/country-is-russia/apply/";
         int page = 1;
@@ -65,7 +64,7 @@ public class Luding implements Handler {
                         wine.setPathImage(site + image.getElementsByTag("img").attr("src").replace("600_600_1", "800_900_0").replace("webp", "png"));
                         wine.setTitle(image.getElementsByTag("img").attr("alt"));
                         wine.setPrice(Double.parseDouble(item.getElementsByClass("price__main").get(0).text().replace(" ", "").replace("Р", "")));
-                        if(wine.getPrice() < DiscountedWinesApiApplication.MinPrice)
+                        if(wine.getPrice() < DiscountedWinesApiApplication.MIN_PRICE)
                             continue;
                         wine.setPriceWithDiscount(Double.parseDouble(item.getElementsByClass("price__discount").get(0).text().replace(" ", "").replace("Р", "")));
                         result.add(wine);
@@ -74,7 +73,7 @@ public class Luding implements Handler {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+
             }
             page++;
         }
