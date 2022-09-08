@@ -39,7 +39,7 @@ public class WineHelp implements Handler{
                         wine.setPage(site + name.attr("href"));
                         wine.setTitle(name.attr("title"));
                         String img = name.getElementsByClass("product-item-image-original").get(0).attr("style");
-                        wine.setPathImage(site + img.replace("background-image: url('", "").replace("');", "").trim());
+                        wine.setPathImage(site + img.replace("background-image: url('", "").replace("');", "").replace("resize_cache/", "").replace("230_260_1/","").trim());
                         Element discount = item.getElementsByClass("product-item-numb").get(0);
                         wine.setDiscount(Double.parseDouble(discount.text().replace("-", "").replace("%", "")));
                         Element since = item.getElementsByClass("product-item-sizer").get(0);
@@ -52,7 +52,7 @@ public class WineHelp implements Handler{
                         Element priceWithDiscount = item.getElementsByClass("product-item-price-current").get(0);
                         wine.setPriceWithDiscount(Double.parseDouble(priceWithDiscount.text().replace("руб.", "").replaceAll(" ", "")));
                         result.add(wine);
-                    } catch(Exception e) {
+                    } catch(Exception ignored) {
 
                     }
                 }

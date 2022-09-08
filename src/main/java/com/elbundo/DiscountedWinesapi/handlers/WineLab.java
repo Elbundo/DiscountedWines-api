@@ -71,8 +71,14 @@ public class WineLab implements Handler{
                         Element title = item.getElementsByClass("item_name").get(0);
                         wine.setTitle(title.text());
                         wine.setPage(site + title.attr("data-href"));
-                        Element image = item.getElementsByAttributeValue("itemprop", "image").get(0);
-                        wine.setPathImage(site + image.attr("src"));
+                        request.setURI(new URI(wine.getPage()));
+                        CloseableHttpResponse responseWinePage = httpClient.execute(request);
+                        log.info(wine.getPage() + "; " + responseWinePage.getStatusLine().getStatusCode());
+                        if(responseWinePage.getStatusLine().getStatusCode() != 200)
+                            continue;
+                        Document winePage = Jsoup.parse(EntityUtils.toString(responseWinePage.getEntity()));
+                        Element image = winePage.getElementsByClass("js-carousel-zoom").get(0).getElementsByClass("owl-lazy").get(0);
+                        wine.setPathImage(site + image.attr("data-src"));
                         Element price = item.getElementsByClass("discount__value").get(0);
                         wine.setPrice(Double.parseDouble(price.attr("data-price")));
                         if(wine.getPrice() < DiscountedWinesApiApplication.MIN_PRICE)
