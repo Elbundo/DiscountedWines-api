@@ -34,7 +34,7 @@ public class Wine {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Wine wine = (Wine) o;
-        return Double.compare(wine.price, price) == 0 && Double.compare(wine.priceWithDiscount, priceWithDiscount) == 0 && Double.compare(wine.discount, discount) == 0 && site.equals(wine.site) && page.equals(wine.page) && title.equals(wine.title) && alias.equals(wine.alias) && pathImage.equals(wine.pathImage) && ratings.equals(wine.ratings);
+        return Double.compare(wine.price, price) == 0 && Double.compare(wine.priceWithDiscount, priceWithDiscount) == 0 && Double.compare(wine.discount, discount) == 0 && site.equals(wine.site) && page.equals(wine.page) && title.equals(wine.title);
     }
 
     @Override
