@@ -1,6 +1,7 @@
 package com.elbundo.DiscountedWinesapi.controller;
 
 import com.elbundo.DiscountedWinesapi.handlers.*;
+import com.elbundo.DiscountedWinesapi.handlers.Parsers.AbstractParser;
 import com.elbundo.DiscountedWinesapi.model.Wine;
 import com.elbundo.DiscountedWinesapi.repository.WineRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -17,26 +18,34 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/api/wines")
 public class DiscountedWinesController {
-    private final List<Handler> handlers = new ArrayList<>();
+    private final List<AbstractParser> handlers = new ArrayList<>();
     private final WineRepository repository;
 
-    public DiscountedWinesController(WineRepository repository, Handler... list) {
+    public DiscountedWinesController(WineRepository repository, AbstractParser... list) {
         this.repository = repository;
         handlers.addAll(Arrays.asList(list));
     }
 
+    //TODO перенести всю логику в сервис
+
     @GetMapping("/discounted")
     public List<Wine> discountedWines() {
+        //TODO реализовать один из вариантов (предпочтительнее второй)
+        //1. Перебираем таблицу кандидатов на исключение и удаляем из основный таблицы
+        //      все вина которые находятся в кандидатах больше n дней
+        //2. Храним в базе дату последнего появления вина на сайте, каждый раз обновляем таблицу,
+        //      вина на которые скидка закончилась удаляются только если прошло больше n дней
         List<Wine> result = new ArrayList<>();
-        for(Handler handler : handlers){
+        for(AbstractParser handler : handlers){
             List<Wine> allDiscountWines = handler.getAllWines();
-            log.info(handler.getSite() + " " + allDiscountWines + "; " + allDiscountWines.size());
+            log.info(handler.getSiteUrl() + " " + allDiscountWines + "; " + allDiscountWines.size());
             if(allDiscountWines.isEmpty())
                 continue;
             //Удалить из списка проверенных вина, скидка на которые закончилась
-            List<Wine> storedWines = repository.findWinesBySite(handler.getSite());
+            List<Wine> storedWines = repository.findWinesBySite(handler.getSiteUrl());
             List<Wine> storedWinesCopy = new ArrayList<>(storedWines);
             storedWines.removeIf(allDiscountWines::contains);
+            //не удалять, а доюавить таблицу кандидатов на исключение
             storedWines.forEach(repository::delete);
             log.info("Wines for which the discount has ended: \n" + storedWines);
             //Удаляем из списка скидочных вин все вина, которые есть в списке checked для этого сайта
@@ -75,6 +84,4 @@ public class DiscountedWinesController {
     public List<Wine> amWineDiscountedWines() {
         return new AmWine().getAllWines();
     }
-
-
 }
