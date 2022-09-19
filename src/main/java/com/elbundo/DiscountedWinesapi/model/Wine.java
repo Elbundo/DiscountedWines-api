@@ -2,6 +2,7 @@ package com.elbundo.DiscountedWinesapi.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -33,7 +34,7 @@ public class Wine {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Wine wine = (Wine) o;
-        return Double.compare(wine.price, price) == 0 && Double.compare(wine.priceWithDiscount, priceWithDiscount) == 0 && Double.compare(wine.discount, discount) == 0 && site.equals(wine.site) && title.equals(wine.title);
+        return Double.compare(wine.price, price) == 0 && Double.compare(wine.priceWithDiscount, priceWithDiscount) == 0 && Double.compare(wine.discount, discount) == 0 && site.equals(wine.site) && page.equals(wine.page) && title.equals(wine.title);
     }
 
     @Override
