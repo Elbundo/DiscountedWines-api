@@ -4,6 +4,7 @@ import com.elbundo.DiscountedWinesapi.DiscountedWinesApiApplication;
 import com.elbundo.DiscountedWinesapi.handlers.Exception.LowPriceException;
 import com.elbundo.DiscountedWinesapi.handlers.HttpClients.ApacheHttpClient;
 import com.elbundo.DiscountedWinesapi.handlers.HttpClients.HttpClient;
+import com.elbundo.DiscountedWinesapi.handlers.HttpClients.WebHttpClient;
 import com.elbundo.DiscountedWinesapi.handlers.Parsers.AbstractHttpParser;
 import com.elbundo.DiscountedWinesapi.model.Wine;
 import org.jetbrains.annotations.NotNull;
@@ -77,6 +78,6 @@ public class WineStyle extends AbstractHttpParser {
     @NotNull
     @Override
     protected HttpClient getHttpClient() throws IOException {
-        return new ApacheHttpClient("winestyleheaders.txt");
+        return new WebHttpClient();
     }
 }

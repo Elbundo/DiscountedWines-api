@@ -28,7 +28,6 @@ public abstract class AbstractParser {
         }
         catch (Exception e) {
             log.info("Http client error: {}", e.getMessage());
-            e.printStackTrace(System.out);
         }
         return result;
     }
