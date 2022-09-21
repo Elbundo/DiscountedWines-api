@@ -9,9 +9,11 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class AmWine extends AbstractJsonParser {
     @NotNull
     @Override

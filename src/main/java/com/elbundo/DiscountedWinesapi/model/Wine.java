@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Date;
 import java.util.Objects;
 
 @Data
@@ -29,6 +30,8 @@ public class Wine {
     private String pathImage;
     private String ratings;
 
+    private Date lastModified = new Date();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -40,5 +43,13 @@ public class Wine {
     @Override
     public int hashCode() {
         return Objects.hash(site, page, title, alias, price, priceWithDiscount, discount, pathImage, ratings);
+    }
+
+    @Override
+    public String toString() {
+        return "Wine{" +
+                "site='" + site + '\'' +
+                ", title='" + title + '\'' +
+                '}';
     }
 }
